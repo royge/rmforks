@@ -1,0 +1,6 @@
+vendor/
+rmforks
+*.lock
+*.swp
+*.fuse_*
+config.json
