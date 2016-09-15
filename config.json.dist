@@ -2,4 +2,5 @@
     "Username":"r0y3",
     "AccessToken":"your-github-access-token"
     "Exclude":["repo1","repo2"]
+    "Timeout":2
 }

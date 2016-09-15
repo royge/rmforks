@@ -1,11 +1,32 @@
 package config
 
-type Config interface {
-	GetConfig(config string) error
+import (
+	"encoding/json"
+	"os"
+	"time"
+)
+
+type Config struct {
+	Username    string
+	AccessToken string
+	Exclude     []string
+	Timeout     time.Duration
 }
 
-type ConfigFunc func(config string) error
+func GetConfig(configFile string) (*Config, error) {
+	file, err := os.Open(configFile)
+	if err != nil {
+		return nil, err
+	}
 
-func (f ConfigFunc) GetConfig(config string) error {
-	return f(config)
+	decoder := json.NewDecoder(file)
+
+	cfg := &Config{}
+	err = decoder.Decode(cfg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return cfg, nil
 }
