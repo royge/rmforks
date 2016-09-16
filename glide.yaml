@@ -4,5 +4,3 @@ import:
   subpackages:
   - github
 - package: golang.org/x/oauth2
-- package: github.com/pkg/errors
-  version: ^0.7.1
