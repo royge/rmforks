@@ -7,6 +7,23 @@ import (
 	"golang.org/x/oauth2"
 )
 
+func waitThenQuit(svc *reposervice.RepoService) {
+	done := false
+	for {
+		select {
+		case done = <-svc.Done():
+			if done {
+				break
+			}
+		default:
+			continue
+		}
+		if done {
+			break
+		}
+	}
+}
+
 func main() {
 	cfg, err := config.GetConfig("config.json")
 
@@ -29,18 +46,5 @@ func main() {
 	go svc.Fetch()
 	go svc.Delete()
 
-	done := false
-	for {
-		select {
-		case done = <-svc.Done():
-			if done {
-				break
-			}
-		default:
-			continue
-		}
-		if done {
-			break
-		}
-	}
+	waitThenQuit(svc)
 }
