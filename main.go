@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"github.com/google/go-github/github"
 	"github.com/r0y3/rmforks/config"
 	"github.com/r0y3/rmforks/reposervice"
@@ -24,8 +25,12 @@ func waitThenQuit(svc *reposervice.RepoService) {
 	}
 }
 
+var conf = flag.String("conf", "config.json", "Configuration file.")
+
 func main() {
-	cfg, err := config.GetConfig("config.json")
+	flag.Parse()
+
+	cfg, err := config.GetConfig(*conf)
 
 	if err != nil {
 		panic(err)
@@ -46,5 +51,5 @@ func main() {
 	go svc.Fetch()
 	go svc.Delete()
 
-	waitThenQuit(svc)
+	waitThenQuit(&svc)
 }

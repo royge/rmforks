@@ -14,6 +14,7 @@ var opt = &github.RepositoryListOptions{
 	ListOptions: github.ListOptions{PerPage: 10},
 }
 
+// RepoService struct type
 type RepoService struct {
 	User    string
 	Client  *github.Client
@@ -21,10 +22,12 @@ type RepoService struct {
 	Timeout time.Duration
 }
 
+// Done returns channel of bool indicating the status of the deletion.
 func (svc *RepoService) Done() chan bool {
 	return done
 }
 
+// Fetch retrieves all Github repositories of the user.
 func (svc *RepoService) Fetch() {
 	for {
 		repos, resp, err := svc.Client.Repositories.List(svc.User, opt)
@@ -43,6 +46,7 @@ func (svc *RepoService) Fetch() {
 	}
 }
 
+// Delete removes the repository if it is a forked and not in the whitelist.
 func (svc *RepoService) Delete() {
 	for {
 		select {
