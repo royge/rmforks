@@ -9,18 +9,14 @@ import (
 )
 
 func waitThenQuit(svc *reposervice.RepoService) {
-	done := false
 	for {
 		select {
 		case done = <-svc.Done():
 			if done {
-				break
+				return
 			}
 		default:
 			continue
-		}
-		if done {
-			break
 		}
 	}
 }
