@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
+	"os"
+
 	"github.com/google/go-github/github"
 	"github.com/r0y3/rmforks/config"
-	"github.com/r0y3/rmforks/reposervice"
+	"github.com/r0y3/rmforks/repo"
 	"golang.org/x/oauth2"
 )
 
@@ -24,7 +26,7 @@ func main() {
 	)
 	tc := oauth2.NewClient(oauth2.NoContext, ts)
 
-	svc := reposervice.RepoService{
+	svc := repo.Service{
 		User:    cfg.Username,
 		Client:  github.NewClient(tc),
 		Exclude: cfg.Exclude,
@@ -36,7 +38,7 @@ func main() {
 
 	for {
 		select {
-		case done := <-svc.Done():
+		case _ = <-svc.Done():
 			os.Exit(0)
 		}
 	}

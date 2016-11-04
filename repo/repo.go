@@ -1,4 +1,4 @@
-package reposervice
+package repo
 
 import (
 	"fmt"
@@ -14,8 +14,8 @@ var opt = &github.RepositoryListOptions{
 	ListOptions: github.ListOptions{PerPage: 10},
 }
 
-// RepoService struct type
-type RepoService struct {
+// Service struct type
+type Service struct {
 	User    string
 	Client  *github.Client
 	Exclude []string
@@ -23,12 +23,12 @@ type RepoService struct {
 }
 
 // Done returns channel of bool indicating the status of the deletion.
-func (svc *RepoService) Done() chan bool {
+func (svc *Service) Done() chan bool {
 	return done
 }
 
 // Fetch retrieves all Github repositories of the user.
-func (svc *RepoService) Fetch() {
+func (svc *Service) Fetch() {
 	for {
 		repos, resp, err := svc.Client.Repositories.List(svc.User, opt)
 		if err != nil {
@@ -47,7 +47,7 @@ func (svc *RepoService) Fetch() {
 }
 
 // Delete removes the repository if it is a forked and not in the whitelist.
-func (svc *RepoService) Delete() {
+func (svc *Service) Delete() {
 	for {
 		select {
 		case repo := <-register:
