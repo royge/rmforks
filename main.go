@@ -36,10 +36,6 @@ func main() {
 	go svc.Fetch()
 	go svc.Delete()
 
-	for {
-		select {
-		case _ = <-svc.Done():
-			os.Exit(0)
-		}
-	}
+	<-svc.Done()
+	os.Exit(0)
 }
