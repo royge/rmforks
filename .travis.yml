@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - "1.8"
+  - "1.9"
+  - "1.10.x"
+  - master
+
+script:
+  - go get -v github.com/google/go-github/github
+  - go get -v golang.org/x/oauth2
+  - go test -v ./...
