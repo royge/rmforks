@@ -6,15 +6,17 @@ import (
 	"time"
 )
 
+// Config type
 type Config struct {
-	Username    string
-	AccessToken string
-	Exclude     []string
-	Timeout     time.Duration
+	Username    string        `json:"username"`
+	AccessToken string        `json:"accesstoken"`
+	Exclude     []string      `json:"exclude"`
+	Timeout     time.Duration `json:"timeout"`
 }
 
-func GetConfig(configFile string) (*Config, error) {
-	file, err := os.Open(configFile)
+// GetConfig read and decodes Config for a file.
+func GetConfig(filename string) (*Config, error) {
+	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
 	}

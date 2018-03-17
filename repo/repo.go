@@ -1,14 +1,16 @@
 package repo
 
 import (
+	"context"
 	"fmt"
-	"github.com/google/go-github/github"
-	"github.com/r0y3/rmforks/stringutil"
 	"time"
+
+	"github.com/google/go-github/github"
+	"github.com/royge/rmforks/stringutil"
 )
 
-var register chan *github.Repository = make(chan *github.Repository)
-var done chan bool = make(chan bool)
+var register = make(chan *github.Repository)
+var done = make(chan bool)
 
 var opt = &github.RepositoryListOptions{
 	ListOptions: github.ListOptions{PerPage: 10},
@@ -28,9 +30,9 @@ func (svc *Service) Done() chan bool {
 }
 
 // Fetch retrieves all Github repositories of the user.
-func (svc *Service) Fetch() {
+func (svc *Service) Fetch(ctx context.Context) {
 	for {
-		repos, resp, err := svc.Client.Repositories.List(svc.User, opt)
+		repos, resp, err := svc.Client.Repositories.List(ctx, svc.User, opt)
 		if err != nil {
 			panic(err)
 		}
@@ -47,13 +49,13 @@ func (svc *Service) Fetch() {
 }
 
 // Delete removes the repository if it is a forked and not in the whitelist.
-func (svc *Service) Delete() {
+func (svc *Service) Delete(ctx context.Context) {
 	for {
 		select {
 		case repo := <-register:
 			if *repo.Fork == true && !stringutil.Contains(svc.Exclude, *repo.Name) {
 				fmt.Println("Deleting ", *repo.Name)
-				_, err := svc.Client.Repositories.Delete(svc.User, *repo.Name)
+				_, err := svc.Client.Repositories.Delete(ctx, svc.User, *repo.Name)
 				if err != nil {
 					fmt.Println(err)
 					return

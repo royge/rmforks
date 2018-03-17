@@ -1,12 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"os"
 
 	"github.com/google/go-github/github"
-	"github.com/r0y3/rmforks/config"
-	"github.com/r0y3/rmforks/repo"
+	"github.com/royge/rmforks/config"
+	"github.com/royge/rmforks/repo"
 	"golang.org/x/oauth2"
 )
 
@@ -25,6 +26,7 @@ func main() {
 		&oauth2.Token{AccessToken: cfg.AccessToken},
 	)
 	tc := oauth2.NewClient(oauth2.NoContext, ts)
+	ctx := context.Background()
 
 	svc := repo.Service{
 		User:    cfg.Username,
@@ -33,8 +35,8 @@ func main() {
 		Timeout: cfg.Timeout,
 	}
 
-	go svc.Fetch()
-	go svc.Delete()
+	go svc.Fetch(ctx)
+	go svc.Delete(ctx)
 
 	<-svc.Done()
 	os.Exit(0)
