@@ -1,4 +1,7 @@
 # rmforks
+
+[![Build Status](https://travis-ci.org/royge/rmforks.svg?branch=master)](https://travis-ci.org/royge/rmforks)
+
 Delete github forked repos using API
 
 Installation and Usage
