@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/github"
-	"github.com/royge/rmforks/stringutil"
+	"github.com/royge/rmforks/strings"
 )
 
 var register = make(chan *github.Repository)
@@ -30,11 +30,11 @@ func (svc *Service) Done() chan bool {
 }
 
 // Fetch retrieves all Github repositories of the user.
-func (svc *Service) Fetch(ctx context.Context) {
+func (svc *Service) Fetch(ctx context.Context) error {
 	for {
 		repos, resp, err := svc.Client.Repositories.List(ctx, svc.User, opt)
 		if err != nil {
-			panic(err)
+			return err
 		}
 		for _, repo := range repos {
 			select {
@@ -46,25 +46,28 @@ func (svc *Service) Fetch(ctx context.Context) {
 		}
 		opt.ListOptions.Page = resp.NextPage
 	}
+
+	return nil
 }
 
 // Delete removes the repository if it is a forked and not in the whitelist.
-func (svc *Service) Delete(ctx context.Context) {
+func (svc *Service) Delete(ctx context.Context) error {
 	for {
 		select {
 		case repo := <-register:
-			if *repo.Fork == true && !stringutil.Contains(svc.Exclude, *repo.Name) {
+			if *repo.Fork == true && !strings.Contains(svc.Exclude, *repo.Name) {
 				fmt.Println("Deleting ", *repo.Name)
 				_, err := svc.Client.Repositories.Delete(ctx, svc.User, *repo.Name)
 				if err != nil {
-					fmt.Println(err)
-					return
+					return err
 				}
 				fmt.Println("Done.")
+				return nil
 			}
 		case <-time.After(time.Second * svc.Timeout):
 			select {
 			case done <- true:
+				return nil
 			}
 		}
 	}
