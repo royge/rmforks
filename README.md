@@ -8,34 +8,42 @@ Delete github forked repos using API
 
 ### Using `go get`
 
-	```$ go get github.com/royge/rmforks```
+    ```
+    $ go get github.com/royge/rmforks
+    ```
 
-	After successful install the binary will be inside `$GOPATH/bin` directory.
+    After successful install the binary will be inside `$GOPATH/bin` directory.
 
 ### From source
 
 1. Clone repo
 
-	```$ git clone https://github.com/royge/rmforks.git```
+    ```
+    $ git clone https://github.com/royge/rmforks.git
+    ```
 
 1. Install `vgo`
 
-	```
-	$ go get -u golang.org/x/vgo
-	```
+    ```
+    $ go get -u golang.org/x/vgo
+    ```
 
 1. Build
 
-	```
-	$ cd rmforks
-	$ CC=gcc vgo build
-	```
+    ```
+    $ cd rmforks
+    $ CC=gcc vgo build
+    ```
 
 1. How to use
 
-	Copy/rename ```config.json.dist``` to ```config.json``` and provide your github username and access token.
+    Copy/rename ```config.json.dist``` to ```config.json``` and provide your github username and access token.
 
-	Run ```$ ./rmforks```
+    Run
+
+    ```
+    $ ./rmforks
+    ```
 
 ## TODO
 
