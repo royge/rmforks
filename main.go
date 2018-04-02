@@ -29,10 +29,11 @@ func main() {
 	ctx := context.Background()
 
 	svc := repo.Service{
-		User:    cfg.Username,
-		Client:  github.NewClient(tc),
-		Exclude: cfg.Exclude,
-		Timeout: cfg.Timeout,
+		User:     cfg.Username,
+		Client:   github.NewClient(tc),
+		Exclude:  cfg.Exclude,
+		Timeout:  cfg.Timeout,
+		Register: make(chan *github.Repository),
 	}
 
 	go svc.Fetch(ctx)
