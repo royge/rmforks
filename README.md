@@ -8,13 +8,15 @@ Delete github forked repos using API
 
 ### Using `go get`
 
-    ```
-    $ go get github.com/royge/rmforks
-    ```
+```
+$ go get github.com/royge/rmforks
+```
 
-    After successful install the binary will be inside `$GOPATH/bin` directory.
+After successful install the binary will be inside `$GOPATH/bin` directory.
 
 ### From source
+
+**NOTE:** Requires `go 1.10`.
 
 1. Clone repo
 
