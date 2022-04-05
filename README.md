@@ -1,6 +1,6 @@
 # rmforks
 
-[![Build Status](https://travis-ci.org/royge/rmforks.svg?branch=master)](https://travis-ci.org/royge/rmforks)
+[![Go](https://github.com/royge/rmforks/actions/workflows/go.yml/badge.svg)](https://github.com/royge/rmforks/actions/workflows/go.yml)
 
 Delete github forked repos using API
 
